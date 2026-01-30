@@ -1,0 +1,1499 @@
+<!doctype html>
+<html lang="zh-TW" class="h-full">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>堡了沒 The Filling Station - 美式漢堡官方網站</title>
+  <script src="/_sdk/element_sdk.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&amp;family=Montserrat:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+  <style>
+    body {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+    }
+
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background-color: #F5F5F5;
+      color: #1A1A1A;
+      overflow-x: hidden;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    /* =====================
+       標題字體統一設定
+       展現美式硬派感
+       ===================== */
+    h1, h2, h3, h4, h5, h6 {
+      font-family: 'Bebas Neue', cursive, sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    /* =====================
+       Sticky 導航列
+       滾動時改變顏色透明度
+       ===================== */
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background-color: rgba(255, 255, 255, 0.98);
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .navbar.scrolled {
+      background-color: rgba(255, 204, 0, 0.96);
+      box-shadow: 0 8px 24px rgba(230, 0, 0, 0.2);
+      padding: 0.75rem 0;
+    }
+
+    .nav-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+
+    .logo {
+      font-size: 1.75rem;
+      font-weight: bold;
+      color: #E60000;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.1em;
+      text-decoration: none;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo:hover {
+      transform: scale(1.05) rotate(-2deg);
+      color: #FFCC00;
+    }
+
+    .tagline {
+      font-size: 0.65rem;
+      color: #FFCC00;
+      letter-spacing: 0.15em;
+      margin-top: 0.2rem;
+      display: block;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2.5rem;
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: #1A1A1A;
+      font-weight: 600;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+      position: relative;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -6px;
+      left: 0;
+      width: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #FFCC00, #E60000);
+      transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .nav-links a:hover::after,
+    .nav-links a.active::after {
+      width: 100%;
+    }
+
+    .nav-links a:hover {
+      color: #E60000;
+      transform: translateY(-2px);
+    }
+
+    /* =====================
+       橫幅輪播區塊
+       自動播放 (5秒切換)
+       ===================== */
+    .hero-section {
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFE680 50%, #FFF9E6 100%);
+      background-size: 400% 400%;
+      padding: 3rem 1.5rem;
+      position: relative;
+      overflow: hidden;
+      width: 100%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    @keyframes gradientShift {
+      0%, 100% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+    }
+
+    .hero-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .carousel-wrapper {
+      position: relative;
+      background-color: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+      width: 100%;
+    }
+
+    .carousel {
+      display: flex;
+      transition: transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 100%;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: center;
+      min-height: 400px;
+      width: 100%;
+    }
+
+    .carousel-slide.loading {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+    }
+
+    @keyframes shimmer {
+      from { background-position: -200% 0; }
+      to { background-position: 200% 0; }
+    }
+
+    .carousel-content {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      animation: slideInLeft 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes slideInLeft {
+      from {
+        opacity: 0;
+        transform: translateX(-30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateX(0);
+      }
+    }
+
+    .carousel-title {
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      color: #E60000;
+      margin: 0 0 0.5rem 0;
+      text-transform: uppercase;
+      font-weight: 900;
+      line-height: 1.1;
+    }
+
+    .carousel-subtitle {
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: #FFCC00;
+      margin: 0 0 1.5rem 0;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .carousel-description {
+      font-size: 1rem;
+      color: #555;
+      margin: 0 0 2rem 0;
+      line-height: 1.7;
+      max-width: 500px;
+    }
+
+    .cta-button {
+      display: inline-block;
+      background: linear-gradient(135deg, #FFCC00, #FFB300);
+      color: #1A1A1A;
+      padding: 1.1rem 2.4rem;
+      border-radius: 12px;
+      text-decoration: none;
+      font-weight: 800;
+      font-size: 1.05rem;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: 0 8px 20px rgba(255, 0, 0, 0.25);
+      width: fit-content;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-button::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background-color: #E60000;
+      transition: left 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: -1;
+    }
+
+    .cta-button:hover {
+      color: white;
+      transform: translateY(-4px);
+      box-shadow: 0 12px 32px rgba(230, 0, 0, 0.4);
+    }
+
+    .cta-button:hover::before {
+      left: 0;
+    }
+
+    .cta-button:active {
+      transform: translateY(-1px);
+    }
+
+    .carousel-image {
+      position: relative;
+      height: 100%;
+      min-height: 320px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #FFE680, #FFD633);
+      box-shadow: 0 16px 40px rgba(0, 0, 0, 0.15);
+      animation: scaleIn 0.6s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+    }
+
+    @keyframes scaleIn {
+      from {
+        opacity: 0;
+        transform: scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+
+    .carousel-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 8px;
+      transition: transform 0.4s ease;
+    }
+
+    .carousel:hover .carousel-image img {
+      transform: scale(1.05);
+    }
+
+    /* =====================
+       輪播控制器
+       進度點 + 無限循環
+       ===================== */
+    .carousel-controls {
+      display: flex;
+      justify-content: center;
+      gap: 0.8rem;
+      padding: 2rem;
+      background-color: white;
+      flex-wrap: wrap;
+    }
+
+    .dot {
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background-color: #ddd;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: 2px solid transparent;
+    }
+
+    .dot.active {
+      background: linear-gradient(135deg, #FFCC00, #FFB300);
+      border-color: #E60000;
+      transform: scale(1.3);
+      box-shadow: 0 4px 12px rgba(255, 204, 0, 0.4);
+    }
+
+    .dot:hover {
+      background-color: #FFE680;
+      transform: scale(1.15);
+    }
+
+    /* =====================
+       品牌故事區塊
+       About Section
+       ===================== */
+    .about-section {
+      padding: 5rem 1.5rem;
+      background: linear-gradient(135deg, #1A1A1A 0%, #2D2D2D 100%);
+      color: white;
+      width: 100%;
+    }
+
+    .about-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .about-image {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #FFE680, #FFD633);
+      width: 100%;
+    }
+
+    .about-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .about-content h2 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #FFCC00;
+      margin: 0 0 1.5rem 0;
+      line-height: 1.2;
+    }
+
+    .about-content p {
+      font-size: 1.05rem;
+      color: #e0e0e0;
+      line-height: 1.8;
+      margin: 0 0 1.5rem 0;
+    }
+
+    .about-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+
+    .feature-item {
+      display: flex;
+      gap: 1rem;
+      padding: 1.5rem;
+      background-color: rgba(255, 204, 0, 0.1);
+      border-left: 4px solid #FFCC00;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+    }
+
+    .feature-item:hover {
+      background-color: rgba(255, 204, 0, 0.15);
+      transform: translateX(4px);
+    }
+
+    .feature-icon {
+      font-size: 1.8rem;
+      flex-shrink: 0;
+    }
+
+    .feature-text h3 {
+      color: #FFCC00;
+      margin: 0 0 0.3rem 0;
+      font-size: 1rem;
+    }
+
+    .feature-text p {
+      margin: 0;
+      font-size: 0.9rem;
+      color: #ccc;
+    }
+
+    /* =====================
+       菜單區塊
+       Grid 網格系統
+       ===================== */
+    .menu-section {
+      padding: 5rem 1.5rem;
+      background-color: #F5F5F5;
+      width: 100%;
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      color: #E60000;
+      margin: 0 0 0.8rem 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 900;
+    }
+
+    .section-subtitle {
+      text-align: center;
+      font-size: 1.15rem;
+      color: #FFCC00;
+      margin: 0 0 3.5rem 0;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .menu-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 2.5rem;
+      width: 100%;
+    }
+
+    /* =====================
+       菜單卡片
+       包含懶加載 + 紅色 Badge
+       ===================== */
+    .menu-card {
+      background-color: white;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.12);
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      cursor: pointer;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-12px);
+      box-shadow: 0 20px 50px rgba(230, 0, 0, 0.25);
+    }
+
+    .menu-card-image {
+      position: relative;
+      height: 240px;
+      overflow: hidden;
+      background: linear-gradient(135deg, #FFE680, #FFD633);
+      width: 100%;
+    }
+
+    .menu-card-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .menu-card:hover .menu-card-image img {
+      transform: scale(1.12) rotate(2deg);
+    }
+
+    .menu-badge {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      background: linear-gradient(135deg, #E60000, #CC0000);
+      color: white;
+      padding: 0.6rem 1.2rem;
+      border-radius: 24px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      box-shadow: 0 6px 16px rgba(230, 0, 0, 0.4);
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: 0.05em;
+      animation: badgePulse 2s ease-in-out infinite;
+    }
+
+    @keyframes badgePulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .menu-card-content {
+      padding: 1.8rem;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+
+    .menu-card-title {
+      font-size: 1.4rem;
+      color: #E60000;
+      margin: 0 0 0.4rem 0;
+      text-transform: uppercase;
+      font-weight: 900;
+      line-height: 1.2;
+    }
+
+    .menu-card-subtitle {
+      font-size: 0.9rem;
+      color: #FFCC00;
+      margin: 0 0 1rem 0;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .menu-card-description {
+      font-size: 0.95rem;
+      color: #666;
+      margin: 0 0 1.5rem 0;
+      line-height: 1.6;
+      flex-grow: 1;
+    }
+
+    .menu-card-price {
+      display: flex;
+      align-items: baseline;
+      gap: 0.8rem;
+      margin: 1.5rem 0 0 0;
+      padding: 1.5rem 0;
+      border-top: 2px dashed #FFE680;
+      border-bottom: 2px dashed #FFE680;
+    }
+
+    .price-label {
+      font-size: 0.8rem;
+      color: #999;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+    }
+
+    .price-value {
+      font-size: 2rem;
+      color: #E60000;
+      font-weight: 900;
+      font-family: 'Bebas Neue', sans-serif;
+      letter-spacing: 0.05em;
+    }
+
+    /* =====================
+       門市區塊
+       台北101位置展示
+       ===================== */
+    .locations-section {
+      padding: 5rem 1.5rem;
+      background: linear-gradient(135deg, #FFF9E6 0%, #FFE680 50%, #FFF9E6 100%);
+      background-size: 400% 400%;
+      width: 100%;
+      animation: gradientShift 15s ease infinite;
+    }
+
+    .locations-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 4rem;
+      align-items: center;
+      width: 100%;
+    }
+
+    .location-image {
+      position: relative;
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+      aspect-ratio: 1;
+      background: linear-gradient(135deg, #FFE680, #FFD633);
+      width: 100%;
+    }
+
+    .location-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .location-image:hover img {
+      transform: scale(1.08);
+    }
+
+    .location-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1.8rem;
+    }
+
+    .location-info h2 {
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      color: #E60000;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .location-card {
+      background-color: white;
+      padding: 2rem;
+      border-radius: 16px;
+      border-left: 6px solid #E60000;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .location-card:hover {
+      transform: translateX(8px) translateY(-4px);
+      box-shadow: 0 12px 32px rgba(230, 0, 0, 0.2);
+    }
+
+    .location-label {
+      font-size: 0.9rem;
+      color: #FFCC00;
+      font-weight: 800;
+      text-transform: uppercase;
+      margin: 0 0 0.8rem 0;
+      letter-spacing: 0.08em;
+    }
+
+    .location-content {
+      font-size: 1.05rem;
+      color: #1A1A1A;
+      margin: 0;
+      line-height: 1.7;
+      font-weight: 500;
+    }
+
+    /* =====================
+       頁尾區塊
+       版權資訊
+       ===================== */
+    .footer {
+      background: linear-gradient(135deg, #1A1A1A 0%, #0F0F0F 100%);
+      color: white;
+      padding: 4rem 1.5rem 2rem;
+      width: 100%;
+    }
+
+    .footer-container {
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    .footer-content {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2.5rem;
+      margin: 0 0 2.5rem 0;
+      padding: 0 0 2.5rem 0;
+      border-bottom: 2px solid rgba(255, 204, 0, 0.2);
+    }
+
+    .footer-section h3 {
+      color: #FFCC00;
+      margin: 0 0 1.2rem 0;
+      font-size: 1.2rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .footer-section p {
+      margin: 0.7rem 0;
+      font-size: 0.95rem;
+      color: #b0b0b0;
+      line-height: 1.6;
+    }
+
+    .footer-section a {
+      color: #FFCC00;
+      text-decoration: none;
+      transition: all 0.3s ease;
+      font-weight: 600;
+    }
+
+    .footer-section a:hover {
+      color: #E60000;
+      text-decoration: underline;
+    }
+
+    .footer-copyright {
+      font-size: 0.9rem;
+      color: #777;
+      text-align: center;
+      padding-top: 1.5rem;
+    }
+
+    /* =====================
+       響應式設計
+       手機優先 (Mobile-First)
+       ===================== */
+    @media (max-width: 768px) {
+      .nav-links {
+        gap: 1.2rem;
+        font-size: 0.85rem;
+      }
+
+      .carousel-slide {
+        grid-template-columns: 1fr;
+        padding: 2rem;
+        min-height: auto;
+        gap: 2rem;
+      }
+
+      .carousel-image {
+        min-height: 280px;
+        order: -1;
+      }
+
+      .menu-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 2rem;
+      }
+
+      .locations-container {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+
+      .location-image {
+        aspect-ratio: 16 / 9;
+      }
+
+      .about-container {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .about-image {
+        aspect-ratio: 16 / 9;
+      }
+
+      .about-features {
+        grid-template-columns: 1fr;
+      }
+
+      .footer-content {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .logo {
+        font-size: 1.4rem;
+      }
+
+      .tagline {
+        font-size: 0.55rem;
+      }
+
+      .nav-links {
+        gap: 0.8rem;
+        font-size: 0.75rem;
+      }
+
+      .section-title {
+        font-size: 1.8rem;
+      }
+
+      .menu-card-title {
+        font-size: 1.1rem;
+      }
+
+      .menu-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+      }
+
+      .carousel-title {
+        font-size: 1.6rem;
+      }
+
+      .carousel-subtitle {
+        font-size: 0.95rem;
+      }
+
+      .carousel-slide {
+        padding: 1.5rem;
+        min-height: auto;
+      }
+
+      .hero-section {
+        padding: 2rem 1rem;
+      }
+
+      .about-section,
+      .menu-section,
+      .locations-section {
+        padding: 3rem 1rem;
+      }
+    }
+
+    /* =====================
+       加載與轉換動畫
+       ===================== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.5s ease-out;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(400px); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); opacity: 1; }
+      to { transform: translateX(400px); opacity: 0; }
+    }
+
+    .notification-toast {
+      animation: slideIn 0.3s ease-out;
+    }
+
+    .notification-toast.hide {
+      animation: slideOut 0.3s ease-out;
+    }
+
+    .menu-card {
+      animation: fadeIn 0.6s ease-out forwards;
+      opacity: 0;
+    }
+
+    .menu-card:nth-child(1) { animation-delay: 0ms; }
+    .menu-card:nth-child(2) { animation-delay: 80ms; }
+    .menu-card:nth-child(3) { animation-delay: 160ms; }
+    .menu-card:nth-child(4) { animation-delay: 240ms; }
+    .menu-card:nth-child(5) { animation-delay: 320ms; }
+    .menu-card:nth-child(n+6) { animation-delay: 400ms; }
+  </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="/_sdk/data_sdk.js" type="text/javascript"></script>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body class="h-full"><!-- =====================
+       導航列
+       Sticky 定位 + 平滑滾動
+       ===================== -->
+  <nav class="navbar" id="navbar">
+   <div class="nav-container"><a href="#home" class="logo"> 🍔 <span id="brand-name">堡了沒</span> <span class="tagline" id="brand-tagline">The Filling Station</span> </a>
+    <ul class="nav-links">
+     <li><a href="#home">Home</a></li>
+     <li><a href="#about">About</a></li>
+     <li><a href="#menu">Menu</a></li>
+     <li><a href="#locations">Locations</a></li>
+    </ul>
+   </div>
+  </nav><!-- =====================
+       橫幅輪播區塊
+       自動播放 5 秒切換
+       ===================== -->
+  <section class="hero-section" id="home">
+   <div class="hero-container">
+    <div class="carousel-wrapper">
+     <div class="carousel" id="carousel" style="width: 100%;"><!-- 輪播項目由 JS 動態插入 -->
+     </div>
+     <div class="carousel-controls" id="carousel-controls"><!-- 進度點由 JS 動態插入 -->
+     </div>
+    </div>
+   </div>
+  </section><!-- =====================
+       品牌故事區塊
+       About Section
+       ===================== -->
+  <section class="about-section" id="about">
+   <div class="about-container">
+    <div class="about-image"><img src="https://images.unsplash.com/photo-1555939594-58d7cb561a1b?w=600&amp;h=600&amp;fit=crop" alt="堡了沒品牌故事" loading="lazy" onerror="console.error('About image failed:', this.src); this.parentElement.style.background='linear-gradient(135deg, #FFE680, #FFD633)'; this.style.display='none';">
+    </div>
+    <div class="about-content">
+     <h2 id="about-title">About The Filling Station</h2>
+     <p id="about-description">我們致力於提供最道地的美式漢堡體驗。使用精選食材、傳統烹飪手法，將每一個漢堡打造成美食藝術品。在堡了沒，你不只是用餐，而是在享受一段美式文化之旅。</p>
+     <div class="about-features">
+      <div class="feature-item">
+       <div class="feature-icon">
+        🎯
+       </div>
+       <div class="feature-text">
+        <h3>精選食材</h3>
+        <p>採用每日新鮮食材，嚴格把關品質</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        👨‍🍳
+       </div>
+       <div class="feature-text">
+        <h3>專業廚師</h3>
+        <p>經驗豐富的廚師團隊精心烹飪</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        🌟
+       </div>
+       <div class="feature-text">
+        <h3>獨特風味</h3>
+        <p>融合經典與創意的獨特漢堡菜單</p>
+       </div>
+      </div>
+      <div class="feature-item">
+       <div class="feature-icon">
+        ❤️
+       </div>
+       <div class="feature-text">
+        <h3>顧客至上</h3>
+        <p>提供頂級的服務與用餐體驗</p>
+       </div>
+      </div>
+     </div>
+    </div>
+   </div>
+  </section><!-- =====================
+       菜單區塊
+       動態從 CSV 載入
+       Grid 3欄(桌機)/2欄(平板)/1欄(手機)
+       ===================== -->
+  <section class="menu-section" id="menu">
+   <div class="menu-container">
+    <h2 class="section-title" id="menu-title">Our Menu</h2>
+    <p class="section-subtitle" id="menu-subtitle">全新推出 | Premium American Burgers</p>
+    <div class="menu-grid" id="menu-grid"><!-- 菜單項目由 JS 動態插入 -->
+    </div>
+   </div>
+  </section><!-- =====================
+       門市資訊區塊
+       台北101位置 + 營業資訊
+       ===================== -->
+  <section class="locations-section" id="locations">
+   <div class="locations-container">
+    <div class="location-image"><img src="https://images.unsplash.com/photo-1517457373614-b7152f800fd1?w=600&amp;h=600&amp;fit=crop" alt="堡了沒台北101店" loading="lazy" onerror="console.error('Location image failed:', this.src); this.parentElement.style.background='linear-gradient(135deg, #FFE680, #FFD633)'; this.style.display='none';">
+    </div>
+    <div class="location-info">
+     <h2 id="locations-title">Visit Us Today</h2>
+     <div class="location-card">
+      <p class="location-label">📍 台北門市</p>
+      <p class="location-content" id="location-address">台北市信義區市府路45號 101大樓1樓</p>
+     </div>
+     <div class="location-card">
+      <p class="location-label">📞 聯絡方式</p>
+      <p class="location-content" id="location-phone">(02) 8789-1234</p>
+     </div>
+     <div class="location-card">
+      <p class="location-label">🕐 營業時間</p>
+      <p class="location-content" id="location-hours">週一 - 週四：11:00 - 22:00<br>
+        週五 - 週日：11:00 - 23:00<br><span style="color: #FFCC00; font-weight: 700;">國定假日全天營業</span></p>
+     </div>
+    </div>
+   </div>
+  </section><!-- =====================
+       頁尾區塊
+       2026 版權資訊
+       ===================== -->
+  <footer class="footer">
+   <div class="footer-container">
+    <div class="footer-content">
+     <div class="footer-section">
+      <h3>🍔 About Us</h3>
+      <p>堡了沒 The Filling Station 提供最道地的美式漢堡美食體驗。以精選食材、傳統工法、熱情服務著稱。</p>
+     </div>
+     <div class="footer-section">
+      <h3>⚡ Quick Links</h3>
+      <p><a href="#home">Home</a></p>
+      <p><a href="#menu">Menu</a></p>
+      <p><a href="#locations">Locations</a></p>
+      <p><a href="#about">About</a></p>
+     </div>
+     <div class="footer-section">
+      <h3>🌐 Follow Us</h3>
+      <p><a href="#" target="_blank" rel="noopener noreferrer">Facebook</a></p>
+      <p><a href="#" target="_blank" rel="noopener noreferrer">Instagram</a></p>
+      <p><a href="#" target="_blank" rel="noopener noreferrer">Twitter</a></p>
+     </div>
+    </div>
+    <p class="footer-copyright" id="footer-text">© 2026 The Filling Station All Rights Reserved</p>
+   </div>
+  </footer>
+  <script>
+    // =====================
+    // 全局配置與狀態管理
+    // =====================
+    // CSV 來源：Google Sheets 公開連結
+    const CSV_URL = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTD9P66Ef4UGKl1H_sYS06H_g_UAsAY5URtNyzrdMafPqfLNyoYefgTvaC0jnXS6xlu73KccCLFJXSj/pub?gid=0&single=true&output=csv';
+
+    // 預設配置（可通過編輯面板修改）
+    const defaultConfig = {
+      brand_name: '堡了沒',
+      brand_tagline: 'The Filling Station',
+      hero_title: '美式漢堡',
+      hero_subtitle: 'Premium American Burgers',
+      hero_cta: '馬上了解',
+      menu_title: 'Our Menu',
+      menu_subtitle: '全新推出 | Premium American Burgers',
+      about_title: 'About The Filling Station',
+      about_description: '我們致力於提供最道地的美式漢堡體驗。使用精選食材、傳統烹飪手法，將每一個漢堡打造成美食藝術品。在堡了沒，你不只是用餐，而是在享受一段美式文化之旅。',
+      locations_title: 'Visit Us Today',
+      location_address: '台北市信義區市府路45號 101大樓1樓',
+      location_phone: '(02) 8789-1234',
+      location_hours: '週一 - 週四：11:00 - 22:00<br>週五 - 週日：11:00 - 23:00<br><span style="color: #FFCC00; font-weight: 700;">國定假日全天營業</span>',
+      footer_text: '© 2026 The Filling Station All Rights Reserved'
+    };
+
+    let config = { ...defaultConfig };
+    let allMenuItems = [];
+    let currentCarouselIndex = 0;
+    let carouselInterval = null;
+
+    // =====================
+    // CSV 解析函式
+    // 處理引號和換行符號，避免破版
+    // =====================
+    function parseCSV(text) {
+      const lines = [];
+      let currentLine = [];
+      let currentField = '';
+      let inQuotes = false;
+
+      for (let i = 0; i < text.length; i++) {
+        const char = text[i];
+        const nextChar = text[i + 1];
+
+        if (inQuotes) {
+          if (char === '"' && nextChar === '"') {
+            // 轉義的引號
+            currentField += '"';
+            i++;
+          } else if (char === '"') {
+            // 結束引號
+            inQuotes = false;
+          } else {
+            currentField += char;
+          }
+        } else {
+          if (char === '"') {
+            // 開始引號
+            inQuotes = true;
+          } else if (char === ',') {
+            currentLine.push(currentField.trim());
+            currentField = '';
+          } else if (char === '\n' || (char === '\r' && nextChar === '\n')) {
+            currentLine.push(currentField.trim());
+            if (currentLine.some(cell => cell !== '')) {
+              lines.push(currentLine);
+            }
+            currentLine = [];
+            currentField = '';
+            if (char === '\r') i++;
+          } else if (char !== '\r') {
+            currentField += char;
+          }
+        }
+      }
+
+      if (currentField || currentLine.length > 0) {
+        currentLine.push(currentField.trim());
+        if (currentLine.some(cell => cell !== '')) {
+          lines.push(currentLine);
+        }
+      }
+
+      return lines;
+    }
+
+    // =====================
+    // 資料轉換函式
+    // 將 CSV 解析為菜單項目物件陣列
+    // =====================
+    function csvToMenuItems(csvData) {
+      if (csvData.length <= 1) return [];
+
+      const headers = csvData[0];
+      // 尋找對應的欄位索引
+      const titleIdx = headers.findIndex(h => h.includes('主標'));
+      const subtitleIdx = headers.findIndex(h => h.includes('副標'));
+      const descIdx = headers.findIndex(h => h.includes('介紹'));
+      const priceIdx = headers.findIndex(h => h.includes('價格'));
+      const noteIdx = headers.findIndex(h => h.includes('備註'));
+      const imageIdx = headers.findIndex(h => h.includes('圖片'));
+
+      return csvData.slice(1).map(row => ({
+        title: row[titleIdx] || '未命名商品',
+        subtitle: row[subtitleIdx] || '',
+        description: row[descIdx] || '美味漢堡',
+        price: row[priceIdx] || '$0',
+        note: row[noteIdx] || '',
+        image_url: row[imageIdx] || ''
+      }));
+    }
+
+    // =====================
+    // HTML 轉義函式
+    // 防止 XSS 攻擊
+    // =====================
+    function escapeHtml(text) {
+      if (!text) return '';
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // =====================
+    // 輪播相關函式
+    // =====================
+    function renderCarousel(items) {
+      const carouselEl = document.getElementById('carousel');
+      const controlsEl = document.getElementById('carousel-controls');
+
+      // 取前 5 項用於輪播
+      const carouselItems = items.slice(0, 5);
+
+      // 清空輪播
+      carouselEl.innerHTML = '';
+      controlsEl.innerHTML = '';
+
+      if (carouselItems.length === 0) {
+        carouselEl.innerHTML = '<div class="carousel-slide" style="grid-template-columns: 1fr; place-items: center;"><p style="color: #999;">尚無商品資料</p></div>';
+        return;
+      }
+
+      // 生成輪播項目
+      carouselItems.forEach((item, idx) => {
+        const slide = document.createElement('div');
+        slide.className = 'carousel-slide fade-in';
+        slide.innerHTML = `
+          <div class="carousel-content">
+            <h3 class="carousel-title">${escapeHtml(item.title)}</h3>
+            <p class="carousel-subtitle">${escapeHtml(item.subtitle)}</p>
+            <p class="carousel-description">${escapeHtml(item.description)}</p>
+            <button class="cta-button" onclick="showProductDetails('${escapeHtml(item.title)}', '${escapeHtml(item.price)}')">${config.hero_cta}</button>
+          </div>
+          <div class="carousel-image">
+            <img 
+              src="${item.image_url}" 
+              alt="${escapeHtml(item.title)}"
+              loading="lazy"
+              onerror="console.error('Carousel image failed:', this.src); this.parentElement.style.background='linear-gradient(135deg, #FFE680, #FFD633)'; this.style.display='none';"
+            >
+          </div>
+        `;
+        carouselEl.appendChild(slide);
+      });
+
+      // 生成進度點
+      carouselItems.forEach((_, idx) => {
+        const dot = document.createElement('div');
+        dot.className = `dot ${idx === 0 ? 'active' : ''}`;
+        dot.onclick = () => goToSlide(idx);
+        controlsEl.appendChild(dot);
+      });
+
+      // 啟動自動輪播
+      startCarousel(carouselItems.length);
+    }
+
+    // 導航到特定輪播項目
+    function goToSlide(index) {
+      const totalSlides = document.querySelectorAll('.carousel-slide').length;
+      currentCarouselIndex = (index + totalSlides) % totalSlides;
+      updateCarouselPosition();
+      resetCarouselTimer();
+    }
+
+    // 更新輪播位置
+    function updateCarouselPosition() {
+      const carousel = document.getElementById('carousel');
+      carousel.style.transform = `translateX(-${currentCarouselIndex * 100}%)`;
+
+      document.querySelectorAll('.dot').forEach((dot, idx) => {
+        dot.classList.toggle('active', idx === currentCarouselIndex);
+      });
+    }
+
+    // 下一張幻燈片
+    function nextSlide() {
+      const totalSlides = document.querySelectorAll('.carousel-slide').length;
+      currentCarouselIndex = (currentCarouselIndex + 1) % totalSlides;
+      updateCarouselPosition();
+    }
+
+    // 啟動自動輪播（5秒切換一次）
+    function startCarousel(totalSlides) {
+      if (totalSlides <= 1) return;
+      resetCarouselTimer();
+    }
+
+    // 重置輪播計時器
+    function resetCarouselTimer() {
+      if (carouselInterval) clearInterval(carouselInterval);
+      carouselInterval = setInterval(nextSlide, 5000);
+    }
+
+    // 顯示產品詳情（替代 alert() 使用吐司通知）
+    function showProductDetails(title, price) {
+      // 創建吐司通知（避免使用 alert()）
+      const notification = document.createElement('div');
+      notification.className = 'notification-toast';
+      notification.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: linear-gradient(135deg, #E60000, #CC0000);
+        color: white;
+        padding: 1.2rem 1.8rem;
+        border-radius: 12px;
+        box-shadow: 0 10px 32px rgba(0,0,0,0.3);
+        z-index: 9999;
+        max-width: 320px;
+        font-size: 0.95rem;
+        font-weight: 600;
+      `;
+      notification.innerHTML = `<strong style="font-size: 1.1rem;">${title}</strong><br><span style="font-size: 0.85rem; opacity: 0.9;">價格: ${price}</span>`;
+      
+      document.body.appendChild(notification);
+      
+      setTimeout(() => {
+        notification.classList.add('hide');
+        setTimeout(() => notification.remove(), 300);
+      }, 3500);
+    }
+
+    // =====================
+    // 菜單渲染函式
+    // 包含懶加載、紅色 Badge 備註
+    // =====================
+    function renderMenu(items) {
+      const menuGrid = document.getElementById('menu-grid');
+      menuGrid.innerHTML = '';
+
+      if (items.length === 0) {
+        menuGrid.innerHTML = '<p style="color: #999; grid-column: 1/-1; text-align: center;">尚無菜單資料</p>';
+        return;
+      }
+
+      items.forEach((item, idx) => {
+        const card = document.createElement('div');
+        card.className = 'menu-card fade-in';
+
+        // 生成備註 Badge（如果有備註）
+        let badgeHTML = '';
+        if (item.note && item.note.trim()) {
+          badgeHTML = `<div class="menu-badge">${escapeHtml(item.note)}</div>`;
+        }
+
+        card.innerHTML = `
+          <div class="menu-card-image">
+            ${badgeHTML}
+            <img 
+              src="${item.image_url}" 
+              alt="${escapeHtml(item.title)}"
+              loading="lazy"
+              onerror="console.error('Menu image failed:', this.src); this.parentElement.style.background='linear-gradient(135deg, #FFE680, #FFD633)'; this.style.display='none';"
+            >
+          </div>
+          <div class="menu-card-content">
+            <h3 class="menu-card-title">${escapeHtml(item.title)}</h3>
+            <p class="menu-card-subtitle">${escapeHtml(item.subtitle)}</p>
+            <p class="menu-card-description">${escapeHtml(item.description)}</p>
+            <div class="menu-card-price">
+              <span class="price-label">PRICE</span>
+              <span class="price-value">${escapeHtml(item.price)}</span>
+            </div>
+          </div>
+        `;
+
+        menuGrid.appendChild(card);
+      });
+    }
+
+    // =====================
+    // 頁面滾動效果
+    // 監控 Scroll 位置，調整 Header 背景透明度
+    // =====================
+    function handleScroll() {
+      const navbar = document.getElementById('navbar');
+      const scrollY = window.scrollY;
+
+      // 超過 50px 時變色
+      if (scrollY > 50) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+    }
+
+    // =====================
+    // 平滑滾動
+    // =====================
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+
+    // =====================
+    // 載入 CSV 資料
+    // Fetch API 抓取 CSV -> 解析為 JSON -> 動態 DOM 生成
+    // =====================
+    async function loadMenuData() {
+      try {
+        const response = await fetch(CSV_URL);
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+
+        const text = await response.text();
+        const csvData = parseCSV(text);
+        const items = csvToMenuItems(csvData);
+
+        allMenuItems = items;
+        renderCarousel(items);
+        renderMenu(items);
+      } catch (error) {
+        console.error('Failed to load menu data:', error);
+        document.getElementById('menu-grid').innerHTML = '<p style="color: #E60000; grid-column: 1/-1; text-align: center;">❌ 無法載入菜單資料</p>';
+      }
+    }
+
+    // =====================
+    // Element SDK 整合
+    // 允許編輯面板修改文字內容
+    // =====================
+    async function onConfigChange(newConfig) {
+      config = { ...config, ...newConfig };
+
+      // 更新品牌名稱和標語
+      if (newConfig.brand_name) {
+        document.getElementById('brand-name').textContent = newConfig.brand_name;
+      }
+
+      if (newConfig.brand_tagline) {
+        document.getElementById('brand-tagline').textContent = newConfig.brand_tagline;
+      }
+
+      // 更新各區塊的文字
+      if (newConfig.menu_title) {
+        document.getElementById('menu-title').textContent = newConfig.menu_title;
+      }
+
+      if (newConfig.menu_subtitle) {
+        document.getElementById('menu-subtitle').textContent = newConfig.menu_subtitle;
+      }
+
+      if (newConfig.about_title) {
+        document.getElementById('about-title').textContent = newConfig.about_title;
+      }
+
+      if (newConfig.about_description) {
+        document.getElementById('about-description').textContent = newConfig.about_description;
+      }
+
+      if (newConfig.locations_title) {
+        document.getElementById('locations-title').textContent = newConfig.locations_title;
+      }
+
+      if (newConfig.location_address) {
+        document.getElementById('location-address').textContent = newConfig.location_address;
+      }
+
+      if (newConfig.location_phone) {
+        document.getElementById('location-phone').textContent = newConfig.location_phone;
+      }
+
+      if (newConfig.location_hours) {
+        document.getElementById('location-hours').innerHTML = newConfig.location_hours;
+      }
+
+      if (newConfig.footer_text) {
+        document.getElementById('footer-text').textContent = newConfig.footer_text;
+      }
+
+      if (newConfig.hero_cta) {
+        // 更新輪播按鈕文字
+        document.querySelectorAll('.cta-button').forEach(btn => {
+          btn.textContent = newConfig.hero_cta;
+        });
+      }
+    }
+
+    // 初始化 Element SDK
+    if (window.elementSdk) {
+      window.elementSdk.init({
+        defaultConfig,
+        onConfigChange,
+        mapToCapabilities: (cfg) => ({
+          recolorables: [],
+          borderables: [],
+          fontEditable: undefined,
+          fontSizeable: undefined
+        }),
+        mapToEditPanelValues: (cfg) => new Map([
+          ['brand_name', cfg.brand_name || defaultConfig.brand_name],
+          ['brand_tagline', cfg.brand_tagline || defaultConfig.brand_tagline],
+          ['hero_cta', cfg.hero_cta || defaultConfig.hero_cta],
+          ['menu_title', cfg.menu_title || defaultConfig.menu_title],
+          ['menu_subtitle', cfg.menu_subtitle || defaultConfig.menu_subtitle],
+          ['about_title', cfg.about_title || defaultConfig.about_title],
+          ['about_description', cfg.about_description || defaultConfig.about_description],
+          ['locations_title', cfg.locations_title || defaultConfig.locations_title],
+          ['location_address', cfg.location_address || defaultConfig.location_address],
+          ['location_phone', cfg.location_phone || defaultConfig.location_phone],
+          ['location_hours', cfg.location_hours || defaultConfig.location_hours],
+          ['footer_text', cfg.footer_text || defaultConfig.footer_text]
+        ])
+      });
+    }
+
+    // =====================
+    // 初始化頁面
+    // =====================
+    window.addEventListener('scroll', handleScroll);
+    loadMenuData();
+  </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9c5f7a1a2076332a',t:'MTc2OTc2MDQ2MC4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
